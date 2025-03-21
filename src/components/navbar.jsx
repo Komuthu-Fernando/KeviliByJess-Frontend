@@ -1,11 +1,13 @@
-// src/components/Navbar.jsx
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart, Phone } from "lucide-react";
 import Logo from '../assets/logo.png';
+import { useCart } from "../context/CartContext"; // Import the useCart hook
 
 const Navbar = () => {
+  const { cart } = useCart(); // Get the cart state from CartContext
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
@@ -30,13 +32,46 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const cartItemCount = 3; // Replace with actual cart state
+  useEffect(() => {
+    const sectionToScroll = localStorage.getItem("scrollToSection");
+  
+    if (sectionToScroll) {
+      setTimeout(() => {
+        if (sectionToScroll === "top") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          const section = document.getElementById(sectionToScroll);
+          section?.scrollIntoView({ behavior: "smooth" });
+        }
+        localStorage.removeItem("scrollToSection"); // Clear storage after scroll
+      }, 100); // Slight delay to ensure page has rendered
+    }
+  }, [location.pathname]);
+  
+
+  const handleNavClick = (sectionId, isHome) => {
+    if (location.pathname === "/" && isHome) {
+      // Force scroll to top when Home is clicked
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else if (location.pathname === "/") {
+      // Scroll to section if already on Home
+      const section = document.getElementById(sectionId);
+      section?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      // Navigate to home and store the section to scroll to
+      localStorage.setItem("scrollToSection", sectionId || "top");
+      navigate("/");
+    }
+  };
+  
+  // Get the number of items in the cart
+  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Single", path: "/#single", sectionId: "single" },
-    { name: "Cake", path: "/#cake", sectionId: "cake" },
-    { name: "Packages", path: "/#packages", sectionId: "packages" },
+    { name: "Home", path: "/", sectionId: "", isHome: true },
+    { name: "Single", path: "#single", sectionId: "single" },
+    { name: "Cake", path: "#cake", sectionId: "cake" },
+    { name: "Packages", path: "#packages", sectionId: "packages" },
     { name: "Cart", path: "/cart", icon: <ShoppingCart size={22} />, isCart: true },
     { name: "Contact", path: "/contact", icon: <Phone size={20} />, isContact: true },
   ];
@@ -44,19 +79,25 @@ const Navbar = () => {
   return (
     <nav className="bg-[#FCFCFC] sticky top-0 z-50 my-2">
       <div className="container mx-auto flex justify-between items-center px-6 py-3">
-        {/* Logo */}
-        <Link to="/" className="w-30"><img src={Logo}/></Link>
+        <Link to="/" className="w-30"><img src={Logo} alt="Logo" /></Link>
 
-        {/* Navigation Items */}
         <div className="flex space-x-6 items-center">
           {navItems.map((item, index) => {
-            const isActive =
-              location.pathname === item.path || activeSection === item.sectionId;
+            const isActive = location.pathname === item.path || activeSection === item.sectionId;
 
             return (
               <Link
                 key={index}
                 to={item.path}
+                onClick={(e) => {
+                  if (item.isHome) {
+                    e.preventDefault(); // Prevent React Router navigation for Home
+                    handleNavClick("", true);
+                  } else if (item.sectionId) {
+                    e.preventDefault(); // Prevent default anchor behavior
+                    handleNavClick(item.sectionId, false);
+                  }
+                }}
                 className={`relative flex items-center justify-center px-4 py-2 rounded-lg text-gray-700 hover:text-[#85B415] transition ${
                   isActive ? "text-[#85B415]" : ""
                 } ${item.isContact ? "bg-[#B2D55E] text-white rounded-xl px-4 py-2 ms-6" : ""}`}
