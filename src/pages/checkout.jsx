@@ -56,7 +56,7 @@ const Checkout = () => {
 
     try {
       // Send data to the backend
-      const response = await fetch("/api/place-order", {
+      const response = await fetch("http://localhost:5001/api/place-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,12 +64,12 @@ const Checkout = () => {
         body: JSON.stringify(orderData),
       });
 
+      const data = await response.json();
       if (response.ok) {
-        toast.success("Order placed successfully!");
-        clearCart(); // Clear cart after successful order
-        // navigate("/order-success"); // Redirect to a success page
+        toast.success(data.message || "Order placed successfully!");
+        clearCart();
       } else {
-        toast.error("There was an issue placing your order.");
+        toast.error(data.error || "There was an issue placing your order.");
       }
     } catch (error) {
       console.error("Error placing order:", error);
@@ -151,7 +151,7 @@ const Checkout = () => {
       </div>
 
       {/* Place Order Button */}
-      <button onClick={handlePlaceOrder} className="w-full bg-[#85B415] text-white py-3 mt-5 rounded-md">
+      <button onClick={handlePlaceOrder} className="w-full bg-[#85B415] text-white py-3 mt-5 rounded-md hover:bg-[#76A10E] transition cursor-pointer">
         Place Order
       </button>
 
