@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -76,6 +76,10 @@ const Checkout = () => {
       toast.error("Error placing your order. Please try again.");
     }
   };
+
+  useEffect(() => {
+		window.scrollTo(0, 0);
+	}, []);
 
   return (
     <div className="max-w-lg mx-auto p-6 mt-5">

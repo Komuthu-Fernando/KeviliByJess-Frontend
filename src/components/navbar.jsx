@@ -73,7 +73,7 @@ const Navbar = () => {
     { name: "Cake", path: "#cake", sectionId: "cake" },
     { name: "Packages", path: "#packages", sectionId: "packages" },
     { name: "Cart", path: "/cart", icon: <ShoppingCart size={22} />, isCart: true },
-    { name: "Contact", path: "/contact", icon: <Phone size={20} />, isContact: true },
+    { name: "Contact", path: "/contactus", icon: <Phone size={20} />, isContact: true },
   ];
 
   return (
