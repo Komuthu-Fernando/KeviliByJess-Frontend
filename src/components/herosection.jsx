@@ -6,7 +6,7 @@ import KondaKavum from '../assets/konda-kavum.png';
 const HeroSection = () => {
   return (
     <section className="mt-5 md:mt-0 flex flex-col md:flex-row items-center justify-center px-4 sm:px-6 md:px-10 lg:px-16 min-h-[calc(100vh-5rem)] max-w-7xl mx-auto">
-      {/* Text Content */}
+      
       <div className="w-full md:w-1/2 text-center md:text-left mb-8 md:mb-0 px-4">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
           A Taste of Tradition:

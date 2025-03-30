@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Don't forget to import styles
+import "react-toastify/dist/ReactToastify.css"; 
 
 const ProductCard = ({ id, name, price, image, weight, items, largeImage, addToCart }) => {
   const [quantity, setQuantity] = useState(1); // To manage the quantity
 
   const handleQuantityChange = (change) => {
-    setQuantity((prevQuantity) => Math.max(1, prevQuantity + change)); // Ensure quantity doesn't go below 1
+    setQuantity((prevQuantity) => Math.max(1, prevQuantity + change)); // quantity doesn't go below 1
   };
 
   const handleAddToCart = () => {
     addToCart({ id, name, price, quantity }); // Pass quantity to addToCart
     toast.success(`${name} added to the cart!`, {
       position: "top-right",
-      autoClose: 3000, // Duration for toast to remain visible
+      autoClose: 2000, // Duration for toast to remain visible
       hideProgressBar: false,
     });
   };

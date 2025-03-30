@@ -50,7 +50,7 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const handleNavClick = (sectionId, isHome) => {
-    setMenuOpen(false); // Close menu on click
+    setMenuOpen(false); 
 
     if (location.pathname === "/" && isHome) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -101,7 +101,7 @@ const Navbar = () => {
         <button 
           className="lg:hidden text-gray-700"
           onClick={(e) => {
-            e.stopPropagation(); // Prevent immediate closing
+            e.stopPropagation(); 
             setMenuOpen((prev) => !prev);
           }}
           aria-label="Toggle menu"
