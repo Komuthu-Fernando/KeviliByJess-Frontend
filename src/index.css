@@ -15,3 +15,14 @@ body {
 }
 
 
+@media (max-width: 479px) {
+  body {
+    margin: 0;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  body {
+    margin: 0;
+  }
+}

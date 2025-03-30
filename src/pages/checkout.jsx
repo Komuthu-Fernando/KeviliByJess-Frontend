@@ -4,10 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays, isSameDay, format } from "date-fns";
 import { useCart } from "../context/CartContext";
-import { toast, ToastContainer } from "react-toastify"; // Import react-toastify
-import "react-toastify/dist/ReactToastify.css"; // Import styles for react-toastify
+import { toast, ToastContainer } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css"; 
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import Select from "react-select";
 
 const Checkout = () => {
   const { cart, clearCart } = useCart();
@@ -38,7 +39,6 @@ const Checkout = () => {
     const today = new Date();
     return isSameDay(date, today) ? "bg-[#DBECB0] rounded-full" : "";
   };
-
 
   // Form validation
   const isFormValid = () => {
@@ -99,8 +99,13 @@ const Checkout = () => {
   }, []);
 
   const formatDate = (date) => {
-    return format(date, 'MM/dd/yyyy');
+    return format(date, "MM/dd/yyyy");
   };
+
+  const options = [
+    { value: "Pickup", label: "Pickup" },
+    { value: "Delivery", label: "Delivery" },
+  ];
 
   return (
     <div className="max-w-lg mx-auto p-6 mt-5">
@@ -131,10 +136,47 @@ const Checkout = () => {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B2D55E]"
         />
-        <select name="deliveryType" value={customer.deliveryType} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B2D55E]">
-          <option value="Pickup">Pickup</option>
-          <option value="Delivery">Delivery</option>
-        </select>
+        <Select
+  name="deliveryType"
+  value={{ value: customer.deliveryType, label: customer.deliveryType }}
+  onChange={(e) => setCustomer({ ...customer, deliveryType: e.value })}
+  options={options}
+  className="w-full"
+  classNamePrefix="react-select"
+  theme={(theme) => ({
+    ...theme,
+    borderRadius: 0, 
+    colors: {
+      ...theme.colors,
+      primary25: '#EDF7D5',
+      primary: '#B2D55E',
+    },
+  })}
+  styles={{
+    control: (base) => ({
+      ...base,
+      borderRadius: '8px', 
+      
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: '4px', 
+    }),
+    indicatorSeparator: (base) => ({
+      ...base,
+      display: 'none',
+    }),
+    menu: (base) => ({
+      ...base,
+      borderRadius: '8px', 
+      marginTop: '4px', 
+    }),
+    option: (base) => ({
+      ...base,
+      borderRadius: '8px', 
+    }),
+  }}
+/>
 
         {customer.deliveryType === "Delivery" && (
           <div className="mt-2 ml-4 text-gray-700">
@@ -142,7 +184,9 @@ const Checkout = () => {
             <p>Within 25km, $20</p>
             <p>50km, $30</p>
             <p>Within 100km, $60</p>
-            <p className="text-sm text-[#FF6868]">*Delivery charge will be added to the total amount</p>
+            <p className="text-sm text-[#FF6868]">
+              *Delivery charge will be added to the total amount
+            </p>
           </div>
         )}
 
@@ -154,10 +198,12 @@ const Checkout = () => {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B2D55E]"
         />
-        {/* Date Picker */}
+        
         <DatePicker
           selected={customer.deliveryDate}
-          onChange={(date) => setCustomer({ ...customer, deliveryDate: formatDate(date) })}
+          onChange={(date) =>
+            setCustomer({ ...customer, deliveryDate: formatDate(date) })
+          }
           minDate={addDays(new Date(), 4)} // Disable dates before 4 days
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#B2D55E]"
           placeholderText="Select Delivery Date"
@@ -199,7 +245,7 @@ const Checkout = () => {
         Place Order
       </button>
 
-      {/* Toast Container */}
+      
       <ToastContainer />
       {/* Modal */}
       <Transition appear show={isModalOpen} as={Fragment}>
@@ -207,8 +253,8 @@ const Checkout = () => {
           as="div"
           className="fixed inset-0 z-50 flex items-center justify-center"
           onClose={() => {
-          setIsModalOpen(false);
-        }}
+            setIsModalOpen(false);
+          }}
         >
           {/* Glassmorphism Background Overlay */}
           <div className="fixed inset-0 bg-white/30 backdrop-blur-md"></div>
@@ -244,7 +290,7 @@ const Checkout = () => {
                   onClick={() => {
                     setIsModalOpen(false);
                     if (orderStatus === "success") {
-                      navigate("/"); // Redirect to homepage if order is successful
+                      navigate("/"); 
                     }
                   }}
                   className="mt-5 px-4 py-2 bg-[#85B415] text-white rounded-md"
