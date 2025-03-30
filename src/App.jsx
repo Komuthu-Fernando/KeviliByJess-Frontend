@@ -5,6 +5,7 @@ import Home from './pages/home';
 import Cart from './pages/cart';
 import Checkout from './pages/checkout';
 import ContactUs from './pages/contactus.jsx';
+import NotFound from './pages/notfound.jsx';
 import Footer from './components/footer.jsx';
 import { CartProvider } from './context/CartContext.jsx';
 import { ToastContainer } from 'react-toastify';
@@ -20,7 +21,7 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path='/*' element={<Home />} />
+          <Route path='/*' element={<NotFound />} />
         </Routes>
         <Footer />
     </Router>
