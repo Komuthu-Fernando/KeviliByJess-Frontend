@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingCart, Phone, Menu, X } from "lucide-react";
-import Logo from '../assets/logo.png';
+import Logo from "../assets/logo.png";
 import { useCart } from "../context/CartContext";
 
 const Navbar = () => {
@@ -50,7 +50,7 @@ const Navbar = () => {
   }, [location.pathname]);
 
   const handleNavClick = (sectionId, isHome) => {
-    setMenuOpen(false); 
+    setMenuOpen(false);
 
     if (location.pathname === "/" && isHome) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -70,8 +70,18 @@ const Navbar = () => {
     { name: "Single", path: "#single", sectionId: "single" },
     { name: "Cake", path: "#cake", sectionId: "cake" },
     { name: "Packages", path: "#packages", sectionId: "packages" },
-    { name: "Cart", path: "/cart", icon: <ShoppingCart size={22} />, isCart: true },
-    { name: "Contact", path: "/contactus", icon: <Phone size={20} />, isContact: true },
+    {
+      name: "Cart",
+      path: "/cart",
+      icon: <ShoppingCart size={22} />,
+      isCart: true,
+    },
+    {
+      name: "Contact",
+      path: "/contactus",
+      icon: <Phone size={20} />,
+      isContact: true,
+    },
   ];
 
   // Close menu when clicking outside
@@ -95,13 +105,24 @@ const Navbar = () => {
     <nav id="navbar" className="bg-[#FCFCFC] sticky top-0 z-50 my-2 ">
       <div className="container mx-auto flex justify-between items-center px-6 py-3 relative">
         {/* Logo on the left */}
-        <Link to="/" className="w-30"><img src={Logo} alt="Logo" className="h-10" /></Link>
+        <Link
+          to="/"
+          className="w-30"
+          onClick={(e) => {
+            if (location.pathname === "/") {
+              e.preventDefault(); 
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+        >
+          <img src={Logo} alt="Logo" className="h-10" />
+        </Link>
 
         {/* Hamburger menu on the right */}
-        <button 
+        <button
           className="lg:hidden text-gray-700"
           onClick={(e) => {
-            e.stopPropagation(); 
+            e.stopPropagation();
             setMenuOpen((prev) => !prev);
           }}
           aria-label="Toggle menu"
@@ -112,7 +133,9 @@ const Navbar = () => {
         {/* Desktop menu */}
         <div className="hidden lg:flex space-x-6 items-center">
           {navItems.map((item, index) => {
-            const isActive = location.pathname === item.path || activeSection === item.sectionId;
+            const isActive =
+              location.pathname === item.path ||
+              activeSection === item.sectionId;
 
             return (
               <Link
@@ -126,7 +149,11 @@ const Navbar = () => {
                 }}
                 className={`relative flex items-center justify-center px-4 py-2 rounded-lg text-gray-700 hover:text-[#85B415] transition ${
                   isActive ? "text-[#85B415]" : ""
-                } ${item.isContact ? "bg-[#B2D55E] text-white rounded-xl px-4 py-2 ms-6" : ""}`}
+                } ${
+                  item.isContact
+                    ? "bg-[#B2D55E] text-white rounded-xl px-4 py-2 ms-6"
+                    : ""
+                }`}
               >
                 {item.isCart ? (
                   <div className="relative flex items-center justify-center">
@@ -149,15 +176,19 @@ const Navbar = () => {
         </div>
 
         {/* Mobile menu */}
-        <div 
+        <div
           ref={menuRef}
           className={`lg:hidden absolute top-full left-0 w-full bg-[#FCFCFC] shadow-md rounded-b-2xl transition-all duration-300 ${
-            menuOpen ? "max-h-screen opacity-100 py-5" : "max-h-0 opacity-0 py-0"
+            menuOpen
+              ? "max-h-screen opacity-100 py-5"
+              : "max-h-0 opacity-0 py-0"
           } overflow-hidden`}
         >
           <div className="flex flex-col items-center space-y-4">
             {navItems.map((item, index) => {
-              const isActive = location.pathname === item.path || activeSection === item.sectionId;
+              const isActive =
+                location.pathname === item.path ||
+                activeSection === item.sectionId;
 
               return (
                 <Link
@@ -170,7 +201,11 @@ const Navbar = () => {
                   }}
                   className={`relative flex items-center justify-center w-40 text-center py-3 text-gray-700 hover:text-[#85B415] transition ${
                     isActive ? "text-[#85B415]" : ""
-                  } ${item.isContact ? "bg-[#85B415] text-white w-24 rounded-xl py-2" : ""}`}
+                  } ${
+                    item.isContact
+                      ? "bg-[#85B415] text-white w-24 rounded-xl py-2"
+                      : ""
+                  }`}
                 >
                   {item.isCart ? (
                     <div className="relative flex items-center justify-center">

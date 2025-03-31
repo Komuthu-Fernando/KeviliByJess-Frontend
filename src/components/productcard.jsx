@@ -16,6 +16,7 @@ const ProductCard = ({ id, name, price, image, weight, items, largeImage, addToC
       autoClose: 2000, // Duration for toast to remain visible
       hideProgressBar: false,
     });
+    setQuantity(1);
   };
 
   return (
