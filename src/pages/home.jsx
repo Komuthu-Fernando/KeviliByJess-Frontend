@@ -125,7 +125,7 @@ const Home = () => {
         <h4 className="text-red-500 font-medium uppercase tracking-widest">Customer Favorites</h4>
         <h2 className="text-3xl font-bold mt-2">Cake Categories</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 place-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-8 place-items-center">
           {cakeProducts.map((product) => (
             <ProductCard key={product.id} {...product} largeImage addToCart={addToCart} />
           ))}
