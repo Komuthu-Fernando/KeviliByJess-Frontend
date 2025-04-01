@@ -68,7 +68,7 @@ const Checkout = () => {
 
     try {
       // Send data to the backend
-      const response = await fetch("http://localhost:5001/api/place-order", {
+      const response = await fetch("https://kevilibyjess-backend.onrender.com/api/place-order", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
